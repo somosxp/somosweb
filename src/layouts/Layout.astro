@@ -6,9 +6,10 @@ import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import PageSeo from "@components/PageSeo.astro";
 
-import { defaultLanguage } from "../i18n/ui";
+import { defaultLanguage } from "@i18n/ui";
 import MainBody from "@components/MainBody.astro";
 import ContactForm from "@components/ContactForm.astro";
+
 const lang = Astro.currentLocale ?? defaultLanguage;
 
 const { title } = Astro.props;

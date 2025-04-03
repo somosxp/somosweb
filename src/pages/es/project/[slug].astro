@@ -1,27 +1,21 @@
 ---
-import PrimaryButton from "@components/PrimaryButton.astro";
 import ArticleData from "@components/ArticleData.astro";
 import ArticleDobleImage from "@components/ArticleDobleImage.astro";
 import ArticleTitleText from "@components/ArticleTitleText.astro";
 import PlayIcon from "@components/icons/PlayIcon.astro";
 import ProductLayout from "@layouts/ProductLayout.astro";
-import ProjectsSidebar from "@components/ProjectsSidebar.astro";
-import { getProject, getProjects, getCategories } from "@lib/api";
+import ProjectsSidebar from "@components/ProjectsSidebar.tsx";
+import { getProjectBySlug } from "@lib/api";
+import { getLangFromUrl, useTranslations } from "@i18n/utils";
 
-const { id: stringId } = Astro.params;
-const id = Number(stringId);
-const project = await getProject(id);
-const categories = await getCategories();
-const fetchProjects = await getProjects({
-  pageNumber: 1,
-  pageSize: 12,
-  orderBy: "created_at",
-  order: "desc",
-  filters: [{ key: "category_id", value: 1 }],
-});
-const projects = fetchProjects.filter(
-  (project) => project.id.toString() !== id.toString(),
-);
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { slug } = Astro.params;
+if (!slug) {
+  throw new Error("Slug is required");
+}
+const project = await getProjectBySlug(slug);
 
 const blockText = {
   title: "Experience strategy",
@@ -31,21 +25,15 @@ const blockText = {
 };
 
 if (!project) {
-  throw new Error(`Proyecto no encontrado para el ID: ${id}`);
+  throw new Error(`Proyecto no encontrado para el slug: ${slug}`);
 }
 ---
 
 <ProductLayout title={project.title}>
-  <PrimaryButton
-    href="/"
-    rounded={true}
-    className="fixed -bottom-6 left-1/2 -translate-1/2 z-50 scale-150 opacity-35 hover:bottom-0 hover:opacity-100 -translate-y-20"
-    >B</PrimaryButton
-  >
   <div class="mt-32 px-4">
     <div class="flex flex-col lg:flex-row mt-8 gap-y-8 lg:gap-x-4">
       <article
-        class="flex flex-col flex-1 order-2 sticky lg:h-[calc(100vh-8rem)] top-6 overflow-y-auto overflow-hidden"
+        class="flex flex-col flex-1 order-2 lg:sticky lg:h-[calc(100vh-8rem)] top-6 overflow-y-auto overflow-hidden"
       >
         <h1
           class="text-6xl xl:text-8xl font-semibold mb-6"
@@ -127,7 +115,13 @@ if (!project) {
           description={blockText.description}
         />
       </article>
-      <ProjectsSidebar projects={projects} categories={categories} />
+      <aside
+        transition:persist="sidebar"
+        id="sidebar"
+        class="lg:w-[26rem] order-1 lg:order-3 bg-white lg:sticky lg:h-[calc(100vh-8rem)] lg:top-6 overflow-y-auto overflow-hidden"
+      >
+        <ProjectsSidebar currentProject={project} client:load />
+      </aside>
     </div>
   </div>
   <style>
