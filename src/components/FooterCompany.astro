@@ -1,0 +1,26 @@
+---
+import ArrowBottom from "./icons/ArrowBottom.astro";
+
+const { city, telephone, address, zipCode, name } = Astro.props;
+let telephoneToCall = telephone.replace(" ", "");
+if (!telephoneToCall.startsWith("+")) {
+  telephoneToCall = "+34" + telephoneToCall;
+}
+---
+<div
+  class="hover:text-primary transition-all overflow-clip max-h-6 hover:max-h-48 group">
+  <span class="flex items-center cursor-pointer">
+    {city}
+    <div class="group-hover:hidden">
+      <ArrowBottom fill="white" />
+    </div>
+    <div class="hidden group-hover:block rotate-180">
+      <ArrowBottom fill="#99e9eb" />
+    </div>
+  </span>
+  <div class="flex flex-col border-t border-solid border-primary text-primary mt-2 pt-2">
+    <a href={`tel:${telephoneToCall}`}>{telephone}</a>
+    <span class="max-w-40">{address}</span>
+    <span>{zipCode} {name}</span>
+  </div>
+</div>

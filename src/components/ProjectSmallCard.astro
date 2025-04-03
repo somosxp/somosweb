@@ -1,0 +1,44 @@
+---
+import ArrowRightTop from "./icons/ArrowRightTop.astro";
+import PrimaryButton from "./PrimaryButton.astro";
+
+import { getRelativeLocaleUrl } from "astro:i18n";
+const currentLocale = Astro.currentLocale ?? "en";
+
+const { id, title, image, tags, index, link } = Astro.props;
+---
+
+<a
+  href={getRelativeLocaleUrl(currentLocale, `/project/${link}`)}
+  class="relative group"
+>
+  <article
+    class="flex rounded-[1.75rem] bg-[#F2F2F2] p-2 transition-all ease-out duration-300"
+  >
+    <img
+      transition:name={`image-${id}`}
+      src={image}
+      alt={title}
+      class="w-28 h-28 md:w-32 md:h-32 aspect-square object-cover rounded-[1.25rem]"
+      fetchpriority={index > 5 ? "low" : "high"}
+    />
+    <div class="flex flex-col gap-y-2 ml-4 overflow-hidden">
+      <h3
+        class="font-semibold text-gray-900 truncate"
+        transition:name={`title-${id}`}
+      >
+        {title}
+      </h3>
+      <ul class="flex flex-col text-sm text-[#808080] uppercase">
+        {tags.map((tag: string) => <li>#{tag}</li>)}
+      </ul>
+    </div>
+  </article>
+  <PrimaryButton
+    tag="button"
+    rounded={true}
+    className="absolute bottom-2.5 right-2.5 group-hover:bg-primary"
+  >
+    <ArrowRightTop />
+  </PrimaryButton>
+</a>

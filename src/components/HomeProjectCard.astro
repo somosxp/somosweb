@@ -1,0 +1,55 @@
+---
+import ArrowRightTop from "./icons/ArrowRightTop.astro";
+import PrimaryButton from "./PrimaryButton.astro";
+
+const {
+  id,
+  title,
+  shortDescription,
+  image,
+  link,
+  tags,
+  className = "",
+} = Astro.props;
+---
+
+<a href={`/project/${link}`} class={`group ${className}`}>
+  <article>
+    <figure class="overflow-hidden aspect-video rounded-4xl">
+      <img
+        transition:name={`image-${id}`}
+        src={image}
+        class="aspect-video object-cover transition-all ease-out duration-500 group-hover:scale-120"
+      />
+      <figcaption class="sr-only">{shortDescription}</figcaption>
+    </figure>
+    <div class="p-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-xl font-semibold" transition:name={`title-${id}`}>
+            {title}
+          </h3>
+          <ul
+            class="flex flex-col xl:flex-row gap-2 text-sm text-gray-500 mt-1 tags"
+          >
+            {tags.map((tag) => <li class="uppercase">{tag}</li>)}
+          </ul>
+        </div>
+        <div>
+          <PrimaryButton href={link} rounded={true} tag="button">
+            <ArrowRightTop />
+          </PrimaryButton>
+        </div>
+      </div>
+    </div>
+  </article>
+</a>
+<style>
+  @media (min-width: 1440px) {
+    .tags li + li::before {
+      content: "·";
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+</style>

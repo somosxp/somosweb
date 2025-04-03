@@ -1,0 +1,53 @@
+---
+import ArrowTop from "./icons/ArrowTop.astro";
+import PrimaryButton from "./PrimaryButton.astro";
+---
+
+<div
+  class="fixed bottom-14 right-2 z-[100] transition-all ease-out duration-500"
+>
+  <PrimaryButton
+    id="to-top"
+    tag="button"
+    rounded
+    className="hover:scale-125 hover:-translate-y-2 hover:opacity-100 opacity-0"
+  >
+    <ArrowTop />
+  </PrimaryButton>
+</div>
+<script>
+  const buttonToTopVisibility = () => {
+    const button = document.getElementById("to-top");
+    if (!button) return;
+
+    if (
+      document.body.scrollTop > 500 ||
+      document.documentElement.scrollTop > 500
+    ) {
+      button.classList.remove("opacity-0");
+    } else {
+      button.classList.add("opacity-0");
+    }
+  };
+
+  const buttonToTopListener = () => {
+    const button = document.getElementById("to-top");
+    if (!button) return;
+
+    button.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    });
+  };
+
+  document.addEventListener("astro:page-load", () => {
+    buttonToTopVisibility();
+    buttonToTopListener();
+  });
+
+  window.onscroll = () => {
+    buttonToTopVisibility();
+  };
+</script>

@@ -1,0 +1,38 @@
+---
+import ArrowBottom from "./icons/ArrowBottom.astro";
+import NavLink from "./NavLink.astro";
+---
+
+<div class="flex items-start justify-between gap-x-1">
+  <ul
+    class="flex gap-x-3 items-center justify-center lg:rounded-xl bg-white uppercase px-4 drop-shadow-xl flex-col lg:flex-row lg:justify-center max-lg:w-full max-lg:h-full"
+  >
+    <li>
+      <NavLink title="Home" href="/" isActive={true} />
+    </li>
+    <li>
+      <NavLink title="Projects" href="/projects" isActive={false} />
+    </li>
+    <li>
+      <NavLink title="Services" href="/services" isActive={false} />
+    </li>
+    <li>
+      <NavLink title="Contact" href="/contact" isActive={false} />
+    </li>
+  </ul>
+  <ul
+    class="gap-x-3 rounded-xl bg-white uppercase px-4 backdrop-blur-xl drop-shadow-xl group relative hover:rounded-b-none hidden lg:flex"
+  >
+    <li class="flex flex-col">
+      <NavLink title="ENG" href="/">
+        <ArrowBottom />
+      </NavLink>
+      <ul
+        class="flex flex-col gap-x-3 rounded-xl bg-white uppercase px-4 backdrop-blur-xl drop-shadow-xl absolute top-10 left-0 w-full h-0 overflow-hidden group-hover:h-auto rounded-t-none"
+      >
+        <NavLink title="ES" href="/" />
+        <NavLink title="CAT" href="/" />
+      </ul>
+    </li>
+  </ul>
+</div>

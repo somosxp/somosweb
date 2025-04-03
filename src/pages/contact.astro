@@ -1,0 +1,12 @@
+---
+import Layout from "@layouts/Layout.astro";
+import ContactForm from "@components/ContactForm.astro";
+---
+
+<Layout title="Contact">
+  <ContactForm />
+</Layout>
+<script>
+  document.querySelector("#contact-form-section").classList.add("is-open");
+  document.body.classList.add("overflow-hidden");
+</script>

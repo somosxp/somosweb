@@ -1,0 +1,35 @@
+---
+import { SEO } from "astro-seo";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Somos Experiences is a platform that connects creatives with brands and companies to create unique experiences.",
+} = Astro.props;
+---
+
+<SEO
+  charset="utf-8"
+  title={title}
+  titleDefault="Somos Experiences"
+  description={description}
+  extend={{
+    link: [
+      {
+        rel: "icon",
+        type: "image/png",
+        href: "/images/favicon.png",
+      },
+    ],
+    meta: [
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
+      },
+    ],
+  }}
+/>

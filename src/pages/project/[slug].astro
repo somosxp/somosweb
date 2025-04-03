@@ -1,0 +1,134 @@
+---
+import ArticleData from "@components/ArticleData.astro";
+import ArticleDobleImage from "@components/ArticleDobleImage.astro";
+import ArticleTitleText from "@components/ArticleTitleText.astro";
+import PlayIcon from "@components/icons/PlayIcon.astro";
+import ProductLayout from "@layouts/ProductLayout.astro";
+import ProjectsSidebar from "@components/ProjectsSidebar.tsx";
+import { getProjectBySlug } from "@lib/api";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { slug } = Astro.params;
+if (!slug) {
+  throw new Error("Slug is required");
+}
+const project = await getProjectBySlug(slug);
+
+const blockText = {
+  title: "Experience strategy",
+  subtitle: "Challenge",
+  description:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu.",
+};
+
+if (!project) {
+  throw new Error(`Proyecto no encontrado para el slug: ${slug}`);
+}
+---
+
+<ProductLayout title={project.title}>
+  <div class="mt-32 px-4">
+    <div class="flex flex-col lg:flex-row mt-8 gap-y-8 lg:gap-x-4">
+      <article
+        class="flex flex-col flex-1 order-2 lg:sticky lg:h-[calc(100vh-8rem)] top-6 overflow-y-auto overflow-hidden"
+      >
+        <h1
+          class="text-6xl xl:text-8xl font-semibold mb-6"
+          transition:name={`title-${project.id}`}
+        >
+          {project.title}
+        </h1>
+        <ul class="flex gap-x-1 uppercase text-[#808080] text-sm mb-8">
+          {project.tags.map((tag) => <li>#{tag}</li>)}
+        </ul>
+        <section class="relative">
+          <img
+            transition:name={`image-${project.id}`}
+            src={project.image}
+            alt={project.title}
+            class="aspect-video object-cover rounded-4xl w-full"
+          />
+          <button
+            type="button"
+            class="absolute left-1/2 top-1/2 -translate-1/2 transition-all ease-out duration-300 cursor-pointer hover:scale-150 bg-white rounded-full h-14 w-14 flex items-center justify-center hover:bg-primary"
+          >
+            <PlayIcon />
+          </button>
+        </section>
+        <ArticleTitleText
+          title={blockText.title}
+          subtitle={blockText.subtitle}
+          description={blockText.description}
+        />
+        <section class="my-6 md:my-12">
+          <figure>
+            <img
+              src={project.image}
+              alt={project.title}
+              class="aspect-video object-cover rounded-4xl w-full"
+            />
+          </figure>
+        </section>
+        <section class="my-6 md:my-12">
+          <p class="text-xl md:text-4xl text-center md:px-24">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex.
+          </p>
+        </section>
+        <section class="my-6 md:my-12 grid grid-cols-1 md:grid-cols-12 gap-4">
+          {
+            project.data.map((data, index) => (
+              <div
+                class:list={{
+                  "md:col-span-6": index > 2,
+                  "md:col-span-4": index < 5,
+                }}
+              >
+                <ArticleData
+                  number={(index + 1).toString().padStart(2, "0")}
+                  title={data.title}
+                  description={data.description}
+                />
+              </div>
+            ))
+          }
+        </section>
+        <ArticleTitleText
+          title={blockText.title}
+          subtitle={blockText.subtitle}
+          description={blockText.description}
+        />
+        <ArticleDobleImage
+          firstImage={project.image}
+          altFirstImage={project.title}
+          secondImage={project.image}
+          altSecondImage={project.title}
+        />
+        <ArticleTitleText
+          title={blockText.title}
+          subtitle={blockText.subtitle}
+          description={blockText.description}
+        />
+      </article>
+      <aside
+        transition:persist="sidebar"
+        id="sidebar"
+        class="lg:w-[26rem] order-1 lg:order-3 bg-white lg:sticky lg:h-[calc(100vh-8rem)] lg:top-6 overflow-y-auto overflow-hidden"
+      >
+        <ProjectsSidebar currentProject={project} client:load />
+      </aside>
+    </div>
+  </div>
+  <style>
+    @media (min-width: 701px) {
+      article::-webkit-scrollbar {
+        width: 0;
+      }
+    }
+  </style>
+</ProductLayout>

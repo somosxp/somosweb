@@ -1,0 +1,61 @@
+---
+const values = []
+values.push({
+  title: "18 Años",
+  description: "En SOMOS Experiences llevamos 18 años creando experiencias memorables que conectan marcas y personas.",
+})
+
+values.push({
+  title: "335 Empleados",
+  description: "Somos un equipo de 355 profesionales apasionados por la creatividad, la innovación, y la estrategia.",
+})
+
+values.push({
+  title: "5 Oficinas",
+  description: "Contamos con oficinas en Madrid, Barcelona, Bilbao, Málaga y en el metaverso. Siempre cerca para hacer realidad tus ideas.",
+})
+
+values.push({
+  title: "+256 Proyectos",
+  description: "Hemos desarrollado más de 256 proyectos que han dejado huella, transformando eventos en experiencias únicas.",
+})
+---
+<section class="lg:py-20 py-10 px-7">
+  <div class="flex flex-col mt-16 gap-y-16">
+  { values.map(value => (
+    <div class="border-b border-solid border-[#F2F2F2] pb-16">
+      <div class="flex flex-col lg:flex-row gap-y-4 lg:gap-x-8 justify-between transition-all ease-out duration-300 cursor-default story-item">
+        <h4 class="text-4xl lg:text-9xl font-semibold">{value.title}</h4>
+        <p class="w-64">{value.description}</p>
+      </div>
+    </div>
+  ))}
+  </div>
+</section>
+<script>
+  const setStoryItemOpacity = () => {
+    const elements = document.querySelectorAll(".story-item")
+    const windowHeight = window.innerHeight
+
+    elements.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+
+        const startFade = windowHeight * 0.2; // 20% de la ventana
+        const endFade = windowHeight * 0.9;   // 90% de la ventana
+
+        if (rect.top <= endFade) {
+            if (rect.top <= startFade) {
+                element.style.opacity = 1;
+            } else {
+                const progress = (endFade - rect.top) / (endFade - startFade);
+                element.style.opacity = Math.min(1, 0.2 + progress * 0.9);
+            }
+        } else {
+            element.style.opacity = 0.1;
+        }
+    })
+  }
+
+  setStoryItemOpacity()
+  document.addEventListener("scroll", setStoryItemOpacity);
+</script>

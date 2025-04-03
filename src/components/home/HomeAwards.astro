@@ -1,0 +1,140 @@
+---
+import SectionTitle from "../SectionTitle.astro";
+---
+
+<section id="awards-container" class="w-full h-screen relative overflow-hidden bg-[#121212] text-white">
+  <div class="grid md:grid-cols-2 p-20">
+    <SectionTitle title="Awards" class="text-white" />
+    <article>
+      <h3 class="text-xl">Award name</h3>
+      <ul class="text-[#808080] flex gap-x-2 divide-x-1 divide-solid divide-[#808080] [&>li]:pr-2">
+        <li>2019</li>
+        <li>2020</li>
+        <li>2024</li>
+      </ul>
+      <p>sadfafas</p>
+    </article>
+  </div>
+</section>
+
+<script>
+  import Matter from "matter-js"
+
+  const awards = [
+    { title: "Award 1", years: ["2019", "2022", "2024"], size: 150 },
+    { title: "Award 2", years: ["2019", "2022", "2024"], size: 200 },
+    { title: "Award 3", years: ["2019", "2022", "2024"], size: 240 },
+    { title: "Award 4", years: ["2020", "2022", "2024"], size: 400 },
+    { title: "Award 5", years: ["2020", "2022", "2024"], size: 230 },
+    { title: "Award 6", years: ["2020", "2022", "2024"], size: 140 },
+    { title: "Award 7", years: ["2020", "2022", "2024"], size: 400 },
+    { title: "Award 8", years: ["2020", "2022", "2024"], size: 120 },
+  ]
+
+  let engine, render, runner;
+  let hasAnimated = false; // Flag para controlar si ya se hizo la animación
+
+  const startSimulation = (element) => {
+    if (hasAnimated) return; // Si ya se ejecutó, no volver a hacerlo
+
+    const { Engine, Render, Runner, Composite, Composites, Bodies, Events, Mouse, MouseConstraint, Body, Query } = Matter;
+    
+    engine = Engine.create();
+    const world = engine.world;
+
+    const background = "#121212"
+    const height = 800
+
+    render = Render.create({
+      element,
+      engine: engine,
+      options: {
+        width: element.clientWidth,
+        height,
+        background,
+        showAngleIndicator: false,
+        wireframes: false
+      }
+    });
+
+    Render.run(render);
+
+    runner = Runner.create();
+    Runner.run(runner, engine);
+
+    // Crear bordes del contenedor
+    Composite.add(world, [
+      Bodies.rectangle(element.clientWidth / 2, height - 25, element.clientWidth, 10, { isStatic: true, render: { fillStyle: background } }),
+      Bodies.rectangle(element.clientWidth / 2, 0, element.clientWidth, 10, { isStatic: true, render: { fillStyle: background } }),
+      Bodies.rectangle(0, height / 2, 10, height, { isStatic: true, render: { fillStyle: background } }),
+      Bodies.rectangle(element.clientWidth, height / 2 + 2, 10, height, { isStatic: true, render: { fillStyle: background } })
+    ]);
+
+    // Crear las bolas
+    const columns = 4;
+    const rows = Math.ceil(awards.length / columns);
+
+    const stack = Composites.stack(100, 0, columns, rows, 10, 10, (x, y, column, row) => {
+      const index = column + row * columns;
+      if (index >= awards.length) return null;
+      const award = awards[index];
+
+      const circle = Bodies.circle(x, y, award.size / 2, {
+        restitution: 0.6,
+        friction: 0.3,
+        render: {
+          fillStyle: "#ffffff",
+          sprite: {
+            texture: '/images/project-1.jpeg'
+          }
+        },
+        label: award.title
+      })
+
+
+      return circle
+    });
+
+    Composite.add(world, stack);
+
+    // Dibujar el texto dentro de las bolas
+    Events.on(render, 'afterRender', () => {
+      const context = render.context;
+      context.font = '16px Arial';
+      context.fillStyle = '#000';
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+
+      Composite.allBodies(world).forEach((body) => {
+        if (body.label && awards.some(a => a.title === body.label)) {
+          const { x, y } = body.position;
+          context.fillText(body.label, x, y);
+        }
+      });
+    });
+
+    setTimeout(() => {
+      Runner.stop(runner);
+      engine.world.bodies.forEach(body => {
+        Matter.Body.setStatic(body, true)
+      });
+      hasAnimated = true
+    }, 5000)
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !hasAnimated) {
+        startSimulation(entry.target);
+        observer.unobserve(entry.target)
+      }
+    });
+  }, { threshold: 0.5 })
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector("#awards-container");
+    if (container) {
+      observer.observe(container);
+    }
+  });
+</script>

@@ -1,0 +1,70 @@
+---
+import type { Company } from "@lib/types";
+import FooterCompany from "./FooterCompany.astro";
+import BCorp from "./icons/BCorp.astro";
+import ScrollToTopButton from "@components/ScrollToTopButton.astro";
+import { COMPANIES } from "@data/companies";
+import { getLinks, getSocialLinks } from "@data/links";
+import FormNewsletter from "./FormNewsletter.astro";
+
+const currentLocale = Astro.currentLocale ?? "en";
+const links = getLinks(currentLocale, Astro.url.pathname);
+const socialNetworks = getSocialLinks();
+---
+
+<footer class="bg-black text-white px-2 md:px-4 py-4 md:py-9">
+  <div class="flex flex-col lg:flex-row justify-between gap-y-8">
+    <FormNewsletter />
+    <div class="grid grid-cols-2 gap-x-12 gap-y-12 uppercase">
+      <div class="flex flex-col gap-y-3">
+        {links.map((link) => (
+          <a href={link.href} class="hover:opacity-70 transition-all" data-key={link.key}>{link.title}</a>
+        ))}
+      </div>
+
+      <div class="flex flex-col gap-y-3">
+        {COMPANIES.map((company: Company) => (
+          <FooterCompany city={company.city} telephone={company.telephone} address={company.address} zipCode={company.zipCode} name={company.name} />
+        ))}
+      </div>
+
+      <div class="flex flex-col gap-y-2">
+        <BCorp />
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col md:flex-row lg:justify-between mt-8 lg:items-end">
+    <ul class="flex flex-col md:gap-y-4 text-2xl font-semibold">
+      {socialNetworks.map((network) => (
+        <li>
+          <a href={network.href} class="hover:opacity-70 transition-all" target="_blank">{network.title}</a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex lg:gap-x-5 items-end justify-end">
+      <ul
+        class="flex divide-x-1 divide-solid divide-[#999] gap-x-0.5 lg:gap-x-2"
+      >
+        <li>
+          <a
+            href="/"
+            class="text-[#999] hover:opacity-70 text-xs lg:text-sm pr-0.5 lg:pr-2 transition-all"
+            >Terms & Conditions</a
+          >
+        </li>
+        <li>
+          <a
+            href="/"
+            class="text-[#999] hover:opacity-70 text-xs lg:text-sm pr-0.5 lg:pr-2 transition-all"
+            >Privacy Policy</a
+          >
+        </li>
+      </ul>
+      <span class="text-[#999] text-xs lg:text-sm"
+        >&copy; 2025 Somos Experiences</span
+      >
+    </div>
+  </div>
+</footer>
+<ScrollToTopButton />

@@ -1,0 +1,100 @@
+---
+import type { Category, Project } from "@lib/types";
+import ProjectSmallCard from "./ProjectSmallCard.astro";
+
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const { categories, projects } = Astro.props;
+---
+
+<div
+  id="sidebar"
+  class="lg:w-[26rem] order-1 lg:order-3 bg-white sticky lg:h-[calc(100vh-8rem)] top-6 overflow-y-auto overflow-hidden"
+>
+  <header>
+    <h2 class="text-4xl xl:text-5xl font-semibold mb-6">
+      {t("projects.header.title")}
+    </h2>
+    <ul class="flex flex-wrap gap-2">
+      <li>
+        <a
+          href="/"
+          class="bg-[#F2F2F2] py-2 px-6 rounded-3xl uppercase flex flex-col gap-y-4 text-[#808080] hover:bg-primary hover:text-black transition-all ease-out duration-300"
+        >
+          {t("alla")}
+        </a>
+      </li>
+      {
+        categories.map((category: Category) => (
+          <li>
+            <a
+              href="/"
+              class="bg-[#F2F2F2] py-2 px-6 rounded-3xl uppercase flex flex-col gap-y-4 text-[#808080] hover:bg-primary hover:text-black transition-all ease-out duration-300"
+            >
+              {category.title}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </header>
+  <section
+    class="overflow-hidden w-full max-lg:overflow-x-scroll"
+    transition:persist
+  >
+    <nav
+      id="projects"
+      class="flex flex-row lg:flex-col max-lg:gap-x-4 lg:gap-y-4 lg:h-full box-content lg:pr-4 w-[var(--projects-width)] lg:w-full mt-6"
+    >
+      {
+        projects.map((project: Project, index: number) => (
+          <div class="w-80 lg:w-full">
+            <ProjectSmallCard
+              id={project.id}
+              tags={project.tags}
+              title={project.title}
+              description={project.description}
+              shortDescription={project.shortDescription}
+              image={project.image}
+              link={project.link}
+              key={project.id}
+              index={index}
+            />
+          </div>
+        ))
+      }
+    </nav>
+  </section>
+</div>
+<style>
+  @media (min-width: 701px) {
+    #sidebar::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+</style>
+<script>
+  const resizeProjectsSection = () => {
+    const projectsSection = document.getElementById("projects");
+    if (!projectsSection) return;
+
+    if (window.innerWidth > 768) {
+      projectsSection.style.setProperty("--projects-width", "100%");
+    }
+
+    const totalProjects =
+      projectsSection?.querySelectorAll("article").length ?? 0;
+
+    const projectWidth = 320 + 16;
+
+    projectsSection.style.setProperty(
+      "--projects-width",
+      `${totalProjects * projectWidth}px`,
+    );
+  };
+
+  window.addEventListener("resize", resizeProjectsSection);
+  resizeProjectsSection();
+</script>

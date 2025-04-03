@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "title": "Award 1",
+      "image": "https://picsum.photos/300/200",
+      "years": ["2020", "2021", "2022"]
+    },
+    {
+      "id": 2,
+      "title": "Award 2",
+      "image": "/images/project-1.jpeg",
+      "years": ["2020", "2021", "2022"]
+    },
+    {
+      "id": 3,
+      "title": "Award 3",
+      "image": "https://picsum.photos/300/300",
+      "years": ["2020", "2021", "2022"]
+    },
+    {
+      "id": 4,
+      "title": "Award 4",
+      "image": "https://picsum.photos/400/400",
+      "years": ["2020", "2021", "2022"]
+    },
+    {
+      "id": 5,
+      "title": "Award 5",
+      "image": "https://picsum.photos/500/500",
+      "years": ["2020", "2021", "2022"]
+    },
+    {
+      "id": 6,
+      "title": "Award 6",
+      "image": "https://picsum.photos/600/600",
+      "years": ["2020", "2021", "2022"]
+    },
+    {
+      "id": 7,
+      "title": "Award 7",
+      "image": "https://picsum.photos/700/700",
+      "years": ["2020", "2021", "2022"]
+    },
+    {
+      "id": 8,
+      "title": "Award 8",
+      "image": "https://picsum.photos/800/800",
+      "years": ["2020", "2021", "2022"]
+    }
+  ]
+}

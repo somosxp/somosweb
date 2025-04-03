@@ -1,0 +1,136 @@
+---
+import { getLangFromUrl, useTranslations } from "src/i18n/utils";
+import PrimaryButton from "./PrimaryButton.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div class="max-w-2xl">
+  <h4 class="text-3xl md:text-4xl lg:text-5xl font-semibold">
+    {t("form-newsletter.title")}
+  </h4>
+
+  <form class="mt-14 md:max-w-3/4" id="form-newsletter">
+    <div class="flex gap-x-2">
+      <input
+        id="email"
+        name="email"
+        type="email"
+        placeholder="E-mail"
+        class="w-full py-2 bg-transparent text-white focus:outline-none focus:border-primary border-b border-solid border-[#999]"
+      />
+      <PrimaryButton tag="button" id="send-newsletter" className="disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none">{t("form-newsletter.send")}</PrimaryButton>
+    </div>
+    <div class="inline-flex mt-4">
+      <label
+        class="flex gap-x-2 items-start cursor-pointer"
+        for="privacy-policy"
+      >
+        <div class="relative flex items-center mt-1">
+          <input
+            name="privacy-policy"
+            type="radio"
+            class="peer h-5 w-5 cursor-pointer appearance-none rounded-full border border-slate-300 checked:border-slate-400 transition-all"
+            id="privacy-policy"
+          />
+          <span
+            class="absolute bg-primary w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          ></span>
+        </div>
+        <span
+          >{ t("form-newsletter.privacy-policy") }</span
+        >
+      </label>
+    </div>
+    <div class="mt-4">
+      <p class="text-sm text-error hidden" id="privacy-policy-error">
+        Debes aceptar la política de privacidad
+      </p>
+      <p class="text-sm text-error hidden" id="email-error">
+        Debes ingresar un correo electrónico válido
+      </p>
+    </div>
+  </form>
+
+  <div class="mt-14 md:max-w-3/4 text-xl hidden" id="success-newsletter">
+    {t("form-newsletter.success")}
+  </div>
+</div>
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const sendNewsletter = async () => {
+      const sendNewsletterBtn = document.getElementById("send-newsletter") as HTMLButtonElement;
+      const form = document.querySelector("#form-newsletter") as HTMLFormElement;
+      if (form === null) return;
+
+      const privacyPolicyError = document.getElementById("privacy-policy-error");
+      if (privacyPolicyError !== null) {
+        privacyPolicyError.classList.add("hidden");
+      }
+
+      const emailError = document.getElementById("email-error");
+      if (emailError !== null) {
+        emailError.classList.add("hidden");
+      }
+
+      const successNewsletter = document.getElementById("success-newsletter");
+      if (successNewsletter !== null) {
+        successNewsletter.classList.add("hidden");
+      }
+
+      const privacyPolicy = form.querySelector("#privacy-policy");
+      if (privacyPolicy === null) return;
+      const isPrivacyPolicyChecked = !!(privacyPolicy as HTMLInputElement).checked;
+      if (!isPrivacyPolicyChecked) {
+        if (privacyPolicyError !== null) {
+          privacyPolicyError.classList.remove("hidden");
+        }
+        return;
+      }
+
+      
+      const email = form.querySelector("#email");
+      if (email === null) return;
+      const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((email as HTMLInputElement).value);
+      if (!isEmailValid) {
+        if (emailError !== null) {
+          emailError.classList.remove("hidden");
+        }
+        return;
+      }
+
+      sendNewsletterBtn.disabled = true;
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await response.json();
+      sendNewsletterBtn.disabled = false;
+
+      if (result.success) {
+        form.reset();
+        if (successNewsletter !== null) {
+          form.classList.add("hidden");
+          successNewsletter.classList.remove("hidden");
+        }
+      }
+    };
+
+    const sendNewsletterBtn = document.getElementById("send-newsletter") ;
+    if (sendNewsletterBtn !== null) {
+      sendNewsletterBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await sendNewsletter();
+      });
+    }
+  })
+</script>

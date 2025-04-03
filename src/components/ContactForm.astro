@@ -1,0 +1,242 @@
+---
+import FormInput from "@components/FormInput.astro";
+import PrimaryButton from "@components/PrimaryButton.astro";
+import IconClose from "./icons/IconClose.astro";
+import { getLangFromUrl, useTranslations } from "src/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section
+  id="contact-form-section"
+  class="bg-[#121212] fixed z-[100001] transition-all duration-700 overflow-hidden"
+>
+  <div class="w-screen h-screen">
+    <div
+      class="absolute top-4 right-8 scale-125 hover:scale-150 transition-all"
+    >
+      <PrimaryButton tag="button" rounded={true} id="close-contact-form">
+        <IconClose />
+      </PrimaryButton>
+    </div>
+    <div class="pt-36 px-4 grid lg:grid-cols-2">
+      <div class="p-4">
+        <h2 id="contact-title" class="text-white text-4xl font-bold lg:text-8xl opacity-100 transition-opacity duration-500">
+          {t('contact.title')}
+        </h2>
+      </div>
+      <div class="p-4">
+        <div id="contact-success hidden">
+          <h3 class="text-primary text-4xl font-bold lg:text-8xl opacity-100 transition-opacity duration-500">
+            {t('contact.success')}
+          </h3>
+          <div class="flex gap-x-4">
+            <PrimaryButton href="/portfolio">
+              {t('nav.projects')}
+            </PrimaryButton>
+          </div>
+        </div>
+        <form class="text-[#999]" id="contact-form" method="POST">
+          <div class="grid grid-cols-2 gap-x-4 gap-y-32">
+            <FormInput label={t('contact.input.name')} type="text" id="name" required={true} />
+            <FormInput label={t('contact.input.phone')} type="text" id="phone" />
+            <FormInput label={t('contact.input.email')} type="email" id="email" required={true} />
+            <FormInput
+              label={t('contact.input.company')}
+              type="text"
+              id="company"
+              required={true}
+            />
+            <div class="col-span-2">
+              <FormInput
+                label={t('contact.input.description')}
+                type="text"
+                id="description"
+                required={true}
+              />
+            </div>
+            <div class="col-span-2 grid lg:grid-cols-6 gap-x-4 gap-y-8">
+              <div class="col-span-4">
+                <label
+                  class="flex gap-x-2 items-start cursor-pointer"
+                  for="contact-privacy-policy"
+                >
+                  <div class="relative flex items-center mt-1">
+                    <input
+                      name="contact-privacy-policy"
+                      type="checkbox"
+                      class="peer h-5 w-5 cursor-pointer appearance-none rounded-full border border-slate-300 checked:border-slate-400 transition-all"
+                      id="contact-privacy-policy"
+                    />
+                    <span
+                      class="absolute bg-primary w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    ></span>
+                  </div>
+                  <span>{t('contact.privacy-policy')}</span>
+                </label>
+              </div>
+              <div class="col-span-2">
+                <PrimaryButton id="send-contact-form">{t('contact.send')}</PrimaryButton>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const sendForm = async () => {
+      const form = document.querySelector("#contact-form") as HTMLFormElement;
+      if (form === null) return;
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        form.reset();
+
+        const title = document.querySelector('#contact-title') as HTMLElement;
+        if (title === null) return;
+      
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await typeText(title, 'Message in, reply out!');
+      }
+    };
+
+    const closeContactForm = document.getElementById("close-contact-form");
+    if (closeContactForm !== null) {
+      closeContactForm.addEventListener("click", () => {
+        const contactFormSection = document.querySelector(
+          "#contact-form-section",
+        );
+        if (contactFormSection === null) return;
+        contactFormSection.classList.remove("is-open");
+        document.body.classList.remove("overflow-hidden");
+      });
+    }
+
+    const sendContactForm = document.getElementById("send-contact-form");
+    if (sendContactForm !== null) {
+      sendContactForm.addEventListener("click", async (e) => {
+        e.preventDefault();
+        sendForm();
+      });
+    }
+
+    const form = document.querySelector('#contact-form');
+    const title = document.querySelector('#contact-title');
+
+    if (!form || !title) return;
+
+    async function typeText(element: HTMLElement, text: string) {
+      element.textContent = '';
+      element.classList.add('typewriter');
+      
+      const words = text.split(' ');
+      for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+        for (let j = 0; j < word.length; j++) {
+          element.textContent += word[j];
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        if (i < words.length - 1) {
+          if (word === 'in,') {
+            element.textContent += '\n';
+          } else {
+            element.textContent += ' ';
+          }
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+      }
+    }
+  });
+</script>
+<style>
+  section {
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    right: 0;
+  }
+  section:not(.is-open) {
+    transform: translate(-100%, -50px);
+
+    /* opacity: 0; */
+  }
+
+  .is-open {
+    transform: translate(0, 0);
+    opacity: 1;
+    animation:
+      moveToCenter 0.5s forwards,
+      expandFromCenter 0.4s forwards;
+  }
+
+  @keyframes moveToCenter {
+    from {
+      transform: translate(-100%, -50px);
+      top: 0;
+      right: 0;
+    }
+    to {
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -50%);
+    }
+  }
+
+  @keyframes expandFromCenter {
+    from {
+      border-radius: 100%;
+      width: 20px;
+      height: 20px;
+    }
+
+    to {
+      border-radius: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0 }
+    50% { opacity: 1 }
+  }
+
+  .typewriter {
+    position: relative;
+    word-wrap: break-word;
+  }
+
+  .typewriter::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: #fff;
+    margin-left: 2px;
+    animation: blink 0.75s step-end infinite;
+    vertical-align: text-bottom;
+  }
+
+  .delete-text {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+  }
+</style>

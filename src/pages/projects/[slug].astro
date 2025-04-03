@@ -1,0 +1,108 @@
+---
+import ArticleData from '@components/ArticleData.astro';
+import ArticleTitleText from '@components/ArticleTitleText.astro';
+import ProjectsSidebar from '@components/ProjectsSidebar.tsx';
+import ProductLayout from '@layouts/ProductLayout.astro';
+import { getEntry } from 'astro:content';
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/404");
+}
+
+const project = await getEntry("projects", slug);
+
+if (!project) {
+  // return Astro.redirect("/404");
+}
+---
+<ProductLayout title={project.data.title}>
+  <div class="mt-32 px-4">
+    <div class="flex flex-col lg:flex-row mt-8 gap-y-8 lg:gap-x-4">
+      <article
+        class="flex flex-col flex-1 order-2 lg:sticky lg:h-[calc(100vh-8rem)] top-6 overflow-y-auto overflow-hidden"
+      >
+        <h1
+          class="text-6xl xl:text-8xl font-semibold mb-6"
+          transition:name={`title-${project.data.slug}`}
+        >
+          {project.data.title}
+        </h1>
+        { project.data.tags && (
+        <ul class="flex gap-x-1 uppercase text-[#808080] text-sm mb-8">
+          {project.data.tags.map((tag: string) => <li>#{tag}</li>)}
+        </ul>
+        )}
+        <section class="relative">
+          <img
+            transition:name={`image-${project.data.slug}`}
+            src={project.data.image}
+            alt={project.data.title}
+            class="aspect-video object-cover rounded-4xl w-full"
+          />
+        </section>
+        <ArticleTitleText
+          title={project.data.mission.title}
+          subtitle={project.data.mission.subtitle}
+          description={project.data.mission.description}
+        />
+        <section class="my-6 md:my-12">
+          <figure>
+            <img
+              src={project.data.image}
+              alt={project.data.title}
+              class="aspect-video object-cover rounded-4xl w-full"
+            />
+          </figure>
+        </section>
+        <section class="my-6 md:my-12">
+          <p class="text-xl md:text-4xl text-center md:px-24">
+            { project.data.mission.solution }
+          </p>
+        </section>
+        <section class="my-6 md:my-12 grid grid-cols-1 md:grid-cols-12 gap-4">
+          {
+            project.data.stats.map(({ number, description }, index) => (
+              <div
+                class:list={{
+                  "md:col-span-6": index > 2,
+                  "md:col-span-4": index < 5,
+                }}
+              >
+                <ArticleData
+                  number={(index + 1).toString().padStart(2, "0")}
+                  title={number}
+                  description={description}
+                />
+              </div>
+            ))
+          }
+        </section>
+        <ArticleTitleText
+          title="¿Cómo lo hicimos?"
+          description={project.data.mission.howWeDidIt}
+        />
+        <section class="my-6 md:my-12">
+          <p class="text-xl md:text-4xl text-center md:px-24">
+            { project.data.mission.thanks }
+          </p>
+        </section>
+      </article>
+      <aside
+        transition:persist="sidebar"
+        id="sidebar"
+        class="lg:w-[26rem] order-1 lg:order-3 bg-white lg:sticky lg:h-[calc(100vh-8rem)] lg:top-6 overflow-y-auto overflow-hidden"
+      >
+        <ProjectsSidebar currentProject={project} client:load />
+      </aside>
+    </div>
+  </div>
+  <style>
+    @media (min-width: 701px) {
+      article::-webkit-scrollbar {
+        width: 0;
+      }
+    }
+  </style>
+</ProductLayout>

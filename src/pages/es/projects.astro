@@ -1,0 +1,21 @@
+---
+import Layout from "@layouts/Layout.astro";
+
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import SectionTitle from "@components/SectionTitle.astro";
+import ProjectList from "@components/ProjectList.tsx";
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout title={t("projects.title")}>
+  <section class="bg-[#121212] pt-36">
+    <SectionTitle
+      title={t("projects.header.title")}
+      color="white"
+      class="pb-8 px-4"
+    />
+
+    <ProjectList client:load />
+  </section>
+</Layout>

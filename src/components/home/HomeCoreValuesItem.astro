@@ -1,0 +1,12 @@
+---
+const {
+  number,
+  title,
+  description
+} = Astro.props
+---
+<li class="lg:items-center pb-16 flex flex-col lg:flex-row lg:gap-y-9 gap-y-4 md:gap-x-9">
+  <div class="text-[#666666] font-light text-xl">[{number }]</div>
+  <div class="text-3xl md:text-6xl font-semibold text-white">{ title}</div>
+  <div class="text-gray-400 font-light text-xl ml-auto max-w-xl">{ description }</div>
+</li>

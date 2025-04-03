@@ -1,0 +1,226 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import ArrowRightTop from "./icons/ArrowRightTop.astro";
+import Logo from "./icons/Logo.astro";
+import NavLink from "./NavLink.astro";
+import PrimaryButton from "./PrimaryButton.astro";
+import HamburgerButton from "./HamburgerButton.astro";
+import ArrowBottom from "./icons/ArrowBottom.astro";
+
+import { getLangFromUrl, useTranslations, getBaseUrl } from "../i18n/utils";
+import { getLinks, getSocialLinks } from "@data/links";
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const currentLocale = Astro.currentLocale ?? "en";
+let currentPath = Astro.url.pathname;
+const baseUrl = getBaseUrl(lang);
+
+if (currentPath.startsWith(baseUrl)) {
+  currentPath = currentPath.replace(baseUrl, "");
+}
+
+if (!currentPath.startsWith("/")) {
+  currentPath = "/" + currentPath;
+}
+
+const links = getLinks(currentLocale, Astro.url.pathname);
+const socialNetworks = getSocialLinks()
+
+const languages = [
+  {
+    title: "ENG",
+    href: getRelativeLocaleUrl("en", currentPath),
+    isActive: currentLocale === "en",
+  },
+  {
+    title: "ESP",
+    href: getRelativeLocaleUrl("es", currentPath),
+    isActive: currentLocale === "es",
+  },
+  {
+    title: "CAT",
+    href: getRelativeLocaleUrl("ca", currentPath),
+    isActive: currentLocale === "ca",
+  },
+];
+
+let languageActive = languages.find((l) => l.isActive) ?? languages[0];
+---
+
+<div class="fixed top-7 left-5 z-50 mix-blend-difference animate-fade-in-down">
+  <Logo />
+</div>
+<header
+  id="header"
+  class="fixed left-0 top-0 right-0 bg-transparent w-full z-[99999] py-4 px-5 data-[open]:bg-white animate-fade-in-down"
+>
+  <div
+    class="grid items-center justify-center md:justify-normal w-full grid-cols-[auto_1fr] mx-auto text-white gap-x-10 md:flex max-w-screen-full"
+  >
+    <div
+      id="logo"
+      class="md:flex-grow md:basis-0 flex justify-start opacity-0 data-[open]:opacity-100"
+    >
+      <a href="/">
+        <Logo color="#000" />
+      </a>
+    </div>
+    <nav
+      id="header-navbar"
+      class="col-span-full lg:gap-x-4 row-[2/3] grid grid-rows-[0fr] transition-[grid-template-rows] data-[open]:grid-rows-[1fr] md:justify-center md:flex group/nav static data-[open]:h-[calc(100vh-50px)]"
+    >
+      <ul
+        class="flex flex-col md:items-center overflow-x-hidden overflow-y-hidden md:flex-row gap-x-3 md:rounded-xl bg-white md:px-4 md:drop-shadow-xl uppercase text-4xl md:text-base"
+      >
+        {
+          links.map((link) => (
+            <li class="flex">
+              <div class="flex-1">
+                <NavLink
+                  title={link.title}
+                  href={link.href}
+                  isActive={link.isActive}
+                  data-key={link.key}
+                />
+              </div>
+              <div class="flex md:hidden">
+                <PrimaryButton href={link.href}>
+                  <ArrowRightTop />
+                </PrimaryButton>
+              </div>
+            </li>
+          ))
+        }
+
+        <li class="mt-auto flex md:hidden flex-1">
+          <ul class="flex justify-between text-xl w-full flex-col">
+            {
+              socialNetworks.map(({ title, href }) => (
+                <li>
+                  <a href={href} class="text-black font-semibold text-2xl" target="_blank">
+                    {title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </li>
+
+        <li class="mt-auto flex md:hidden">
+          <ul class="flex justify-between text-xl w-full">
+            {
+              languages.map(({ title, href, isActive }) => (
+                <li>
+                  <a
+                    href={href}
+                    class=""
+                    style={{
+                      color: isActive ? "#000" : "#CCC",
+                    }}
+                  >
+                    {title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </li>
+      </ul>
+
+      <ul
+        class="gap-x-3 rounded-xl bg-white uppercase px-4 backdrop-blur-xl drop-shadow-xl group relative hover:rounded-b-none hidden lg:flex"
+      >
+        <li class="flex flex-col">
+          <NavLink title={languageActive.title} href={languageActive.href}>
+            <ArrowBottom />
+          </NavLink>
+          <ul
+            class="flex flex-col gap-x-3 rounded-xl bg-white uppercase backdrop-blur-xl drop-shadow-xl absolute top-10 left-0 w-full h-0 overflow-hidden group-hover:h-auto rounded-t-none"
+          >
+            {
+              languages
+                .filter((l) => !l.isActive)
+                .map(({ title, href, isActive }) => (
+                  <li class="hover:bg-primary px-4 transition-all ease-out duration-300">
+                    <NavLink title={title} href={href} />
+                  </li>
+                ))
+            }
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div
+      id="hire-us"
+      class="flex md:flex-grow md:basis-0 items-center gap-4 ml-auto justify-end"
+    >
+      <PrimaryButton className="drop-shadow-xl">
+        Hire us
+        <ArrowRightTop />
+      </PrimaryButton>
+      <HamburgerButton />
+    </div>
+  </div>
+</header>
+<style>
+  @media (max-width: 640px) {
+    #header-navbar[data-open] > ul {
+      margin-top: 2.5rem;
+    }
+
+    #header-navbar[data-open] > ul > li {
+      padding-block: 2.5rem;
+      border-top: 1px solid #f2f2f2;
+    }
+  }
+</style>
+<script type="text/javascript">
+  const buttonToggleNavbar = document.getElementById("header-navbar-toggle");
+
+  const idsOpeners = ["header", "logo", "header-navbar"];
+  let isMenuOpen = false;
+
+  buttonToggleNavbar.addEventListener("click", () => {
+    idsOpeners.forEach((id) => {
+      const element = document.getElementById(id);
+      if (!isMenuOpen) {
+        element.setAttribute("data-open", true);
+        buttonToggleNavbar.setAttribute("aria-expanded", true);
+      } else {
+        element.removeAttribute("data-open");
+        buttonToggleNavbar.removeAttribute("aria-expanded");
+      }
+    });
+
+    isMenuOpen = !isMenuOpen;
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 640) {
+      isMenuOpen = false;
+      idsOpeners.forEach((id) => {
+        const element = document.getElementById(id);
+        element.removeAttribute("data-open");
+      });
+    }
+  });
+
+  document.addEventListener("astro:page-load", () => {
+    const links = document.querySelectorAll("a");
+    links.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const key = link.getAttribute("data-key");
+        if (key === "contact") {
+          e.preventDefault();
+          document
+            .querySelector("#contact-form-section")
+            .classList.add("is-open");
+          document.body.classList.add("overflow-hidden");
+        }
+      });
+    });
+  });
+</script>

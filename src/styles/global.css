@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@plugin "@midudev/tailwind-animations";
+
+@theme {
+  --color-primary: #99e9eb;
+  --color-error: #FF4149;
+  --font-sans: "Space Grotesk", sans-serif;
+}
+:root {
+  color-scheme: light only;
+  --body-bg: #fff;
+  --text-color: #000;
+}
+
+@media (min-width: 701px) {
+  #sidebar::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+.product-layout #header-navbar,
+.product-layout #hire-us{
+  transform: translateY(-180px);
+}

@@ -1,0 +1,72 @@
+---
+const { project, position = "left" } = Astro.props;
+
+import { getRelativeLocaleUrl } from "astro:i18n";
+const currentLocale = Astro.currentLocale ?? "en";
+
+const animationDuration = Math.floor(Math.random() * 20 + 5);
+const topPosition = Math.floor(Math.random() * (80 - 10) + 20);
+
+const width = Math.floor(Math.random() * (800 - 300) + 240);
+---
+
+<a
+  href={getRelativeLocaleUrl(currentLocale, `/project/${project.link}`)}
+  class={`project-link z-10 transition-all hover:border-[#FFFFFF50] hover:border-2 duration-300 ${position === "left" ? "moveToLeft" : "moveToRight"}`}
+  style={{
+    width: `${width}px`,
+    top: `${topPosition}%`,
+    animationDuration: `${animationDuration}s`,
+    left: `${position === "left" ? `-${width}px` : "140%"}`,
+  }}
+>
+  <img src={project.image} alt={project.title} class="object-cover" />
+</a>
+
+<style>
+  .project-link {
+    display: block;
+    position: absolute;
+    border-radius: 2.25rem;
+    overflow: hidden;
+  }
+
+  .moveToRight {
+    animation: moveProjectToRight ease-in-out infinite;
+  }
+
+  .moveToLeft {
+    animation: moveProjectToLeft ease-in-out infinite;
+  }
+
+  /* Animación del movimiento */
+  @keyframes moveProjectToRight {
+    0% {
+      left: -800px;
+      transform: perspective(800px) rotateY(45deg); /* Perspectiva inicial */
+    }
+    50% {
+      left: 50%;
+      transform: translateX(-50%) perspective(800px) rotateY(0deg); /* Centro sin perspectiva */
+    }
+    100% {
+      left: 140%;
+      transform: perspective(800px) rotateY(-45deg); /* Perspectiva opuesta a la derecha */
+    }
+  }
+
+  @keyframes moveProjectToLeft {
+    0% {
+      left: 140%;
+      transform: perspective(800px) rotateY(-45deg); /* Perspectiva opuesta a la derecha */
+    }
+    50% {
+      left: 50%;
+      transform: translateX(-50%) perspective(800px) rotateY(0deg); /* Centro sin perspectiva */
+    }
+    100% {
+      left: -800px;
+      transform: perspective(800px) rotateY(45deg); /* Perspectiva inicial */
+    }
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import Amgen from "../clients/Amgen.astro";
+import Cocacola from "../clients/Cocacola.astro";
+import Ebay from "../clients/Ebay.astro";
+import Ford from "../clients/Ford.astro";
+import HP from "../clients/HP.astro";
+import Nike from "../clients/Nike.astro";
+import Parker from "../clients/Parker.astro";
+import ArrowRightTop from "../icons/ArrowRightTop.astro";
+import PrimaryButton from "../PrimaryButton.astro";
+import SectionTitle from "../SectionTitle.astro";
+import Carousel from "../Carousel.astro";
+---
+
+<section class="lg:py-20 py-10 px-4">
+  <SectionTitle title="Clients" /> 
+  <div class="flex flex-col gap-y-16 mt-16">
+    <hr class="border-gray-100" />
+    <Carousel>
+      <Amgen />
+      <Cocacola />
+      <Ebay />
+      <PrimaryButton href="/contact">
+        Add your logo
+        <ArrowRightTop />
+      </PrimaryButton>
+      <Ford />
+      <HP />
+      <Nike />
+      <Parker />
+      <PrimaryButton href="/contact">
+        Add your logo
+        <ArrowRightTop />
+      </PrimaryButton>
+      <Amgen />
+      <Cocacola />
+      <Ebay />
+      <PrimaryButton href="/contact">
+        Add your logo
+        <ArrowRightTop />
+      </PrimaryButton>
+      <Ford />
+      <HP />
+      <Nike />
+      <Parker />
+    </Carousel>
+    <hr class="border-gray-100" />
+    <Carousel>
+      <PrimaryButton href="/contact">
+        Add your logo
+        <ArrowRightTop />
+      </PrimaryButton>
+      <Ford />
+      <HP />
+      <Nike /> <PrimaryButton href="/contact">
+        Add your logo
+        <ArrowRightTop />
+      </PrimaryButton>
+      <Cocacola />
+      <Parker />
+      <Amgen />
+      <Cocacola />
+      <Ebay /><Ebay />
+      <PrimaryButton href="/contact">
+        Add your logo
+        <ArrowRightTop />
+      </PrimaryButton>
+      <Ford />
+      <HP />
+      <Nike />
+      <Parker />
+      <Amgen />
+    </Carousel>
+    <hr class="border-gray-100" />
+  </div>
+</section>

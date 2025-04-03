@@ -1,0 +1,39 @@
+---
+import SectionTitle from "../SectionTitle.astro";
+import ServiceCard from "../ServiceCard.astro";
+
+const services = [
+  {
+    title: "BRAND EXPERIENCE",
+    bgcolor: "#FF7F00",
+    description: "Construimos experiencias de marca memorables que generan emoción, engagement y una conexión auténtica con tu público.",
+    image: "/images/service-1.png"
+  },
+  {
+    title: "BRANDED CONTENT",
+    bgcolor: "#121212",
+    color: "#FFFFFF",
+    description: "Creamos contenido que cuenta historias, transmite valores y genera impacto, logrando que tu marca sea relevante y cercana.",
+    image: "/images/service-1.png"
+  },
+  {
+    title: "DIGITAL & SOCIAL MEDIA",
+    bgcolor: "#F2F2F2",
+    description: "Potenciamos tu presencia digital con estrategias innovadoras, campañas virales y contenidos que convierten interacciones en resultados.",
+    image: "/images/service-1.png"
+  },
+  {
+    title: "PR & COMMUNICATIONS",
+    bgcolor: "#99E9EB",
+    description: "Impulsamos tu marca con estrategias de comunicación y relaciones públicas que generan notoriedad y fortalecen tu reputación.",
+    image: "/images/service-1.png"
+  }
+]
+---
+
+<section class="lg:py-20 py-10 px-4">
+  <SectionTitle title="Our Services" />
+  <section class="mt-16 relative">
+    { services.map((service, index) => <ServiceCard {...service} total={services.length} index={index} />)}
+  </section>
+</section>

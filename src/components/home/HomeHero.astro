@@ -1,0 +1,81 @@
+---
+import type { Project } from "@lib/types";
+import HeroProjectCard from "../HeroProjectCard.astro";
+
+const projectsMock = [
+  {
+    title: "THE KITCHEN BY HERMÈS",
+    link: "https://somosexperiences.com/the-kitchen-by-hermes",
+    image:
+      "https://somosexperiences.com/static/image/data/somosweb-v3/8-img-4438.jpg",
+    position: "left",
+  },
+  {
+    title: "COMUNICACIÓN DE LOS CERAWARDS",
+    link: "https://somosexperiences.com/the-kitchen-by-hermes",
+    image:
+      "https://somosexperiences.com/static/image/data/somosweb-v3/portada-cerawards-logo-003.png",
+    position: "right",
+  },
+  {
+    title: "COMUNICACIÓN DE LOS CERAWARDS",
+    link: "https://somosexperiences.com/the-kitchen-by-hermes",
+    image:
+      "https://somosexperiences.com/static/image/data/somosweb-v3/v1-bizum-page-0004.jpg",
+    position: "right",
+  },
+  {
+    title: "COMUNICACIÓN DE LOS CERAWARDS",
+    link: "https://somosexperiences.com/the-kitchen-by-hermes",
+    image:
+      "https://somosexperiences.com/static/image/data/somosweb-v3/audi-q8-dakar-2024ji-0021.jpg",
+    position: "left",
+  },
+  {
+    title: "COMUNICACIÓN DE LOS CERAWARDS",
+    link: "https://somosexperiences.com/the-kitchen-by-hermes",
+    image:
+      "https://somosexperiences.com/static/image/data/somosweb-v3/yadea-2024-img-001.jpeg",
+    position: "right",
+  },
+  {
+    title: "COMUNICACIÓN DE LOS CERAWARDS",
+    link: "https://somosexperiences.com/the-kitchen-by-hermes",
+    image:
+      "https://somosexperiences.com/static/image/data/somosweb-v3/prezero-img-desktop.png",
+    position: "left",
+  },
+];
+
+const { projects } = Astro.props;
+
+let projectsToShow = projects;
+if (!projects.length) {
+  projectsToShow = projectsMock;
+}
+---
+
+<section
+  class="bg-black h-dvh w-full relative overflow-hidden flex flex-col items-center justify-center"
+>
+  {
+    projectsToShow.length &&
+      projectsToShow
+        .slice(0, 10)
+        .map((project: Project, index: number) => (
+          <HeroProjectCard
+            project={project}
+            position={["left", "right"][index % 2]}
+            key={index}
+          />
+        ))
+  }
+  <p
+    class="text-white mix-blend-difference lg:text-6xl uppercase text-center z-20 text-4xl"
+  >
+    More than events...<br />Experiences that connect
+  </p>
+  <p class="hidden xl:block absolute bottom-4 left-4 uppercase text-[#999999]">
+    Scroll for more
+  </p>
+</section>

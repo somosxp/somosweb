@@ -1,0 +1,13 @@
+---
+const { number, title, description } = Astro.props;
+---
+
+<article
+  class="bg-[#F2F2F2] p-6 rounded-3xl flex flex-col gap-y-4 text-[#999] hover:bg-primary transition-all ease-out duration-300"
+>
+  <span class="text-xs">[{number}]</span>
+  <div class="mt-12 flex flex-col gap-y-2">
+    <strong class="text-6xl font-light uppercase text-black">{title}</strong>
+    <p class="font-light">{description}</p>
+  </div>
+</article>

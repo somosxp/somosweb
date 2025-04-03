@@ -1,0 +1,44 @@
+---
+import HomeCoreValuesItem from "./HomeCoreValuesItem.astro";
+---
+
+<section class="lg:py-20 py-10 px-4 bg-[#121212]" id="values">
+  <ul class="px-3 lg:px-9">
+    <HomeCoreValuesItem
+      number="01"
+      title="Seguridad"
+      description="Cumplimos los más altos estándares en privacidad y seguridad de datos. Contamos con certificaciones ISO, un equipo especializado en PRL y medidas de protección física y digital." />
+    <HomeCoreValuesItem
+      number="02"
+      title="Sostenibilidad"
+      description="En SOMOS Experiences, la sostenibilidad es un compromiso real. Diseñamos eventos con impacto positivo y mejoramos cada día para ser más responsables." />
+    <HomeCoreValuesItem
+      number="03"
+      title="Propósito"
+      description="La sostenibilidad no es una tendencia; es parte de nuestro ADN. Creemos que el éxito va más allá de los números: se mide en el impacto positivo que generamos." />
+  </ul>
+</section>
+
+<script>
+  document.addEventListener("scroll", () => {
+    const valuesSection = document.getElementById("values");
+    const main = document.getElementById("main");
+    if (!valuesSection || !main) return;
+
+    const rect = valuesSection.getBoundingClientRect();
+    const startPoint = 250
+    const triggerPoint = 30
+
+
+    if (rect.top < startPoint && rect.top > triggerPoint) {
+      const progress = Math.max(0, 1 - (rect.top / startPoint));
+      const whiteToDark = Math.floor(255 - (255 - 18) * progress);
+      main.style.backgroundColor = `rgb(${whiteToDark}, ${whiteToDark}, ${whiteToDark})`;
+
+    } else if (rect.top <= triggerPoint){
+      main.style.backgroundColor = "#121212";
+    } else {
+      main.style.backgroundColor = "#FFFFFF"
+    }
+});
+</script>

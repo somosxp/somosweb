@@ -1,0 +1,8 @@
+{
+  "runOnSave.commands": [
+    {
+      "match": "astro",
+      "cmd": "pnpm run prettier --write .",
+    }
+  ]
+}

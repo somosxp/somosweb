@@ -1,0 +1,34 @@
+<div
+  transition:persist
+  class="loading h-1.5 w-[0%] bg-primary transition-all duration-200 absolute z-[99999] top-0"
+>
+</div>
+<script>
+  const hideLoading = () => {
+    const loading = document.querySelector(".loading") as HTMLElement;
+    if (!loading) return;
+
+    loading.style.width = "0%";
+    loading.style.opacity = "0";
+  };
+
+  const setLoading = (percent: number) => {
+    const loading = document.querySelector(".loading") as HTMLElement;
+    if (!loading) return;
+
+    loading.style.width = `${percent}%`;
+    loading.style.opacity = "1";
+  };
+
+  document.addEventListener("astro:before-preparation", () => {
+    setLoading(0);
+  });
+
+  document.addEventListener("astro:before-preparation", () => setLoading(0));
+  document.addEventListener("astro:after-preparation", () => setLoading(40));
+  document.addEventListener("astro:before-swap", () => setLoading(70));
+  document.addEventListener("astro:after-swap", () => setLoading(100));
+  document.addEventListener("astro:page-load", () => {
+    setTimeout(hideLoading, 1000);
+  });
+</script>
