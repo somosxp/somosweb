@@ -1,4 +1,4 @@
-import { TransactionalEmailsApi, TransactionalEmailsApiApiKeys, SendSmtpEmail } from "@getbrevo/brevo";
+// import { TransactionalEmailsApi, TransactionalEmailsApiApiKeys, SendSmtpEmail } from "@getbrevo/brevo";
 import { apiFetch } from "./fetchClient";
 import type { Project, Category, CriteriaBuilder, Award, Company, Filter, MailMessage } from "./types";
 
@@ -182,24 +182,26 @@ export const sendEmail = (content: MailMessage): Promise<any> => {
       return reject(new Response(JSON.stringify({ error: 'BREVO_API_KEY not configured' }), { status: 500 }));
     }
 
-    let apiInstance = new TransactionalEmailsApi();
-    apiInstance.setApiKey(TransactionalEmailsApiApiKeys.apiKey, BREVO_API_KEY);
-    let sendSmtpEmail = new SendSmtpEmail();
+    resolve(true)
 
-    if (!content.from) {
-      content.from = { name: "SOMOS Experiences", email: BREVO_SENDER };
-    }
+    // let apiInstance = new TransactionalEmailsApi();
+    // apiInstance.setApiKey(TransactionalEmailsApiApiKeys.apiKey, BREVO_API_KEY);
+    // let sendSmtpEmail = new SendSmtpEmail();
 
-    sendSmtpEmail.subject = content.subject;
-    sendSmtpEmail.htmlContent = content.message;
-    sendSmtpEmail.sender = { "name": content.from.name, "email": content.from.email };
-    sendSmtpEmail.to = content.to.map((to) => ({ "email": to.email, "name": to.name }));
+    // if (!content.from) {
+    //   content.from = { name: "SOMOS Experiences", email: BREVO_SENDER };
+    // }
 
-    apiInstance.sendTransacEmail(sendSmtpEmail)
-      .then(function (data) {
-        resolve(data);
-      }, function (error) {
-        reject(error);
-      });
+    // sendSmtpEmail.subject = content.subject;
+    // sendSmtpEmail.htmlContent = content.message;
+    // sendSmtpEmail.sender = { "name": content.from.name, "email": content.from.email };
+    // sendSmtpEmail.to = content.to.map((to) => ({ "email": to.email, "name": to.name }));
+
+    // apiInstance.sendTransacEmail(sendSmtpEmail)
+    //   .then(function (data) {
+    //     resolve(data);
+    //   }, function (error) {
+    //     reject(error);
+    //   });
   })
 }

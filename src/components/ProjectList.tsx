@@ -51,7 +51,7 @@ export default function ProjectList() {
 
     return () => observer.disconnect();
   }, [hasMore])
-  
+
   return (
     <div className="p-4 grid grid-cols-12 gap-4 gap-y-12 text-white">
       {
@@ -73,6 +73,8 @@ export default function ProjectList() {
 
       <div ref={sentinelRef} className="h-10"></div>
 
+      <div className="md:col-span-4"></div>
+      <div className="md:col-span-6"></div>
       {loading && <p className="text-center py-4 col-span-12">Cargando más proyectos...</p>}
     </div>
   )
