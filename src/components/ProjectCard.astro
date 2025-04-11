@@ -1,0 +1,59 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+const currentLocale = Astro.currentLocale ?? "en";
+const { id, title, image, tags, className = "", link } = Astro.props;
+
+---
+
+<a
+  href={getRelativeLocaleUrl(currentLocale, `/portfolio/${link}`)}
+  class={`group ${className}`}
+>
+  <article>
+    <figure class="overflow-hidden aspect-video rounded-lg lg:rounded-4xl">
+      <img
+        src={image}
+        class="aspect-video object-cover transition-all ease-out duration-500 group-hover:scale-120"
+      />
+    </figure>
+    <div class="p-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-xl font-semibold">
+            {title}
+          </h3>
+          {
+            tags && tags.length && (
+              <ul class="flex flex-col xl:flex-row gap-2 text-sm text-gray-500 mt-1 tags">
+                {tags.map((tag: string) => (
+                  <li class="uppercase">
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+        </div>
+        <div>
+          <button
+            class="rounded-full w-11 h-11 flex items-center justify-center bg-gray-50 uppercase gap-x-1 hover:bg-primary transition-all ease-out duration-500 cursor-pointer group-hover:bg-primary text-black"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M12.2857 4.52218L2.88844 13.9194L2.0802 13.1112L11.4774 3.71394L4.30043 3.83696L4.31589 2.65054L13.4683 2.53132L13.3491 11.6837L12.1627 11.6992L12.2857 4.52218Z"
+                fill="black"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </article>
+</a>

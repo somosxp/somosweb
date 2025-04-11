@@ -3,9 +3,15 @@ import Layout from "@layouts/Layout.astro";
 
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import SectionTitle from "@components/SectionTitle.astro";
-import ProjectList from "@components/ProjectList.tsx";
+import ProjectList from "@components/ProjectList.astro";
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+import { getCollection } from "astro:content";
+
+const projectsCollection = await getCollection("projects");
+const projects = projectsCollection.map((project) => project.data);
 ---
 
 <Layout title={t("projects.title")}>
@@ -16,6 +22,6 @@ const t = useTranslations(lang);
       class="pb-8 px-4"
     />
 
-    <ProjectList client:load />
+    <ProjectList projects={projects} />
   </section>
 </Layout>

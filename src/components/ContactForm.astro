@@ -22,35 +22,54 @@ const t = useTranslations(lang);
     </div>
     <div class="pt-36 px-4 grid lg:grid-cols-2">
       <div class="p-4">
-        <h2 id="contact-title" class="text-white text-4xl font-bold lg:text-8xl opacity-100 transition-opacity duration-500">
-          {t('contact.title')}
+        <h2
+          id="contact-title"
+          class="text-white text-4xl font-bold lg:text-8xl opacity-100 transition-opacity duration-500"
+        >
+          {t("contact.title")}
         </h2>
       </div>
       <div class="p-4">
-        <div id="contact-success hidden">
-          <h3 class="text-primary text-4xl font-bold lg:text-8xl opacity-100 transition-opacity duration-500">
-            {t('contact.success')}
+        <div id="contact-success" class="hidden">
+          <h3
+            class="text-primary text-4xl font-bold lg:text-8xl opacity-100 transition-opacity duration-500"
+          >
+            {t("contact.success")}
           </h3>
           <div class="flex gap-x-4">
             <PrimaryButton href="/portfolio">
-              {t('nav.projects')}
+              {t("nav.projects")}
             </PrimaryButton>
           </div>
         </div>
         <form class="text-[#999]" id="contact-form" method="POST">
           <div class="grid grid-cols-2 gap-x-4 gap-y-32">
-            <FormInput label={t('contact.input.name')} type="text" id="name" required={true} />
-            <FormInput label={t('contact.input.phone')} type="text" id="phone" />
-            <FormInput label={t('contact.input.email')} type="email" id="email" required={true} />
             <FormInput
-              label={t('contact.input.company')}
+              label={t("contact.input.name")}
+              type="text"
+              id="name"
+              required={true}
+            />
+            <FormInput
+              label={t("contact.input.phone")}
+              type="text"
+              id="phone"
+            />
+            <FormInput
+              label={t("contact.input.email")}
+              type="email"
+              id="email"
+              required={true}
+            />
+            <FormInput
+              label={t("contact.input.company")}
               type="text"
               id="company"
               required={true}
             />
             <div class="col-span-2">
               <FormInput
-                label={t('contact.input.description')}
+                label={t("contact.input.description")}
                 type="text"
                 id="description"
                 required={true}
@@ -73,11 +92,13 @@ const t = useTranslations(lang);
                       class="absolute bg-primary w-3 h-3 rounded-full opacity-0 peer-checked:opacity-100 transition-opacity duration-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                     ></span>
                   </div>
-                  <span>{t('contact.privacy-policy')}</span>
+                  <span>{t("contact.privacy-policy")}</span>
                 </label>
               </div>
               <div class="col-span-2">
-                <PrimaryButton id="send-contact-form">{t('contact.send')}</PrimaryButton>
+                <PrimaryButton id="send-contact-form"
+                  >{t("contact.send")}</PrimaryButton
+                >
               </div>
             </div>
           </div>
@@ -108,11 +129,11 @@ const t = useTranslations(lang);
       if (result.success) {
         form.reset();
 
-        const title = document.querySelector('#contact-title') as HTMLElement;
+        const title = document.querySelector("#contact-title") as HTMLElement;
         if (title === null) return;
-      
-        await new Promise(resolve => setTimeout(resolve, 500));
-        await typeText(title, 'Message in, reply out!');
+
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        await typeText(title, "Message in, reply out!");
       }
     };
 
@@ -120,7 +141,7 @@ const t = useTranslations(lang);
     if (closeContactForm !== null) {
       closeContactForm.addEventListener("click", () => {
         const contactFormSection = document.querySelector(
-          "#contact-form-section",
+          "#contact-form-section"
         );
         if (contactFormSection === null) return;
         contactFormSection.classList.remove("is-open");
@@ -136,30 +157,30 @@ const t = useTranslations(lang);
       });
     }
 
-    const form = document.querySelector('#contact-form');
-    const title = document.querySelector('#contact-title');
+    const form = document.querySelector("#contact-form");
+    const title = document.querySelector("#contact-title");
 
     if (!form || !title) return;
 
     async function typeText(element: HTMLElement, text: string) {
-      element.textContent = '';
-      element.classList.add('typewriter');
-      
-      const words = text.split(' ');
+      element.textContent = "";
+      element.classList.add("typewriter");
+
+      const words = text.split(" ");
       for (let i = 0; i < words.length; i++) {
         const word = words[i];
         for (let j = 0; j < word.length; j++) {
           element.textContent += word[j];
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
-        
+
         if (i < words.length - 1) {
-          if (word === 'in,') {
-            element.textContent += '\n';
+          if (word === "in,") {
+            element.textContent += "\n";
           } else {
-            element.textContent += ' ';
+            element.textContent += " ";
           }
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
       }
     }
@@ -215,8 +236,13 @@ const t = useTranslations(lang);
   }
 
   @keyframes blink {
-    0%, 100% { opacity: 0 }
-    50% { opacity: 1 }
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   .typewriter {
@@ -225,7 +251,7 @@ const t = useTranslations(lang);
   }
 
   .typewriter::after {
-    content: '';
+    content: "";
     display: inline-block;
     width: 2px;
     height: 1em;

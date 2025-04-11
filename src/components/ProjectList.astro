@@ -1,0 +1,29 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+const currentLocale = Astro.currentLocale ?? "en";
+
+const { projects = [] } = Astro.props;
+import ProjectCard from "./ProjectCard.astro";
+const LIMIT = 10;
+---
+
+<div class="p-4 grid grid-cols-12 gap-4 gap-y-12 text-white">
+  {
+    projects.length > 0 &&
+      projects.map((project, index) => (
+        <ProjectCard
+          id={project.slug}
+          tags={project.tags}
+          title={project.title}
+          image={project.image}
+          link={project.slug}
+          className={`col-span-12 ${index < 2 ? "md:col-span-6" : "md:col-span-4"}`}
+        />
+      ))
+  }
+
+  <div class="h-10"></div>
+
+  <div class="md:col-span-4"></div>
+  <div class="md:col-span-6"></div>
+</div>

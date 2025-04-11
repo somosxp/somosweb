@@ -24,8 +24,8 @@ export const getLinks = (currentLocale: string, currentPath: string) => {
     {
       key: "projects",
       title: t("nav.projects"),
-      href: getRelativeLocaleUrl(parsedCurrentLocale, "/projects"),
-      isActive: currentPath.startsWith("/project"),
+      href: getRelativeLocaleUrl(parsedCurrentLocale, "/portfolio"),
+      isActive: currentPath.startsWith("/portfolio"),
     },
     {
       key: "contact",

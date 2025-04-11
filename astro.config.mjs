@@ -1,9 +1,8 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
-
+import mdx from '@astrojs/mdx'
 import vercel from "@astrojs/vercel";
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -14,8 +13,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-
-  integrations: [react()],
+  integrations: [react(), mdx()],
   i18n: {
     locales: ["es", "en", "ca"],
     defaultLocale: "en",

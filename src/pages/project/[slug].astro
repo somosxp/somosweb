@@ -33,7 +33,7 @@ if (!project) {
   <div class="mt-32 px-4">
     <div class="flex flex-col lg:flex-row mt-8 gap-y-8 lg:gap-x-4">
       <article
-        class="flex flex-col flex-1 order-2 lg:sticky lg:h-[calc(100vh-8rem)] top-6 overflow-y-auto overflow-hidden"
+        class="flex flex-col flex-1 order-2 top-6 overflow-y-auto overflow-hidden"
       >
         <h1
           class="text-6xl xl:text-8xl font-semibold mb-6"
@@ -118,7 +118,7 @@ if (!project) {
       <aside
         transition:persist="sidebar"
         id="sidebar"
-        class="lg:w-[26rem] order-1 lg:order-3 bg-white lg:sticky lg:h-[calc(100vh-8rem)] lg:top-6 overflow-y-auto overflow-hidden"
+        class="lg:w-[26rem] order-1 lg:order-3 bg-white lg:sticky lg:h-[calc(100vh)] lg:top-6 overflow-y-auto overflow-hidden"
       >
         <ProjectsSidebar currentProject={project} client:load />
       </aside>

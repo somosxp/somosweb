@@ -1,0 +1,55 @@
+---
+slug: "the-kitchen-by-hermes"
+title: "The Kitchen By Hermès"
+image: "https://somosexperiences.com/static/image/data/somosweb-v3/8-img-4438.jpg"
+tags:
+  - Branding
+  - Interaction Design
+  - Website
+---
+
+<h1
+  class="text-6xl xl:text-8xl font-semibold mb-6"
+  transition:name={`title-${frontmatter.slug}`}
+>
+  {frontmatter.title}
+</h1>
+<ul class="flex gap-x-1 uppercase text-[#808080] text-sm mb-8">
+  {frontmatter.tags.map((tag) => <li>#{tag}</li>)}
+</ul>
+<section class="relative">
+  <img
+    transition:name={`image-${frontmatter.slug}`}
+    src={frontmatter.image}
+    alt={frontmatter.title}
+    class="aspect-video object-cover rounded-4xl w-full"
+  />
+  <button
+    type="button"
+    class="absolute left-1/2 top-1/2 -translate-1/2 transition-all ease-out duration-300 cursor-pointer hover:scale-150 bg-white rounded-full h-14 w-14 flex items-center justify-center hover:bg-primary"
+  >
+    <PlayIcon />
+  </button>
+</section>
+<ArticleTitleText
+  title="Experience strategy"
+  subtitle="Challenge"
+  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu."
+/>
+<section class="my-6 md:my-12">
+  <figure>
+    <img
+      src={frontmatter.image}
+      alt={frontmatter.title}
+      class="aspect-video object-cover rounded-4xl w-full"
+    />
+  </figure>
+</section>
+<section class="my-6 md:my-12">
+  <p class="text-xl md:text-4xl text-center md:px-24">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+    aliquip ex.
+  </p>
+</section>

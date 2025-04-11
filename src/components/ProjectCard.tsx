@@ -7,7 +7,7 @@ function getCurrentLocale() {
   return localeFromPath === 'es' ? 'es' : 'en';
 }
 
-export default function ProjectCard({ id, title, image, tags, index, className = "", link, description, shortDescription }) {
+export default function ProjectCard({ id, title, image, tags, className = "", link }) {
   const [currentLocale, setCurrentLocale] = useState(getCurrentLocale());
 
   const defaultLocale = "en";
@@ -36,7 +36,6 @@ export default function ProjectCard({ id, title, image, tags, index, className =
             src={image}
             className="aspect-video object-cover transition-all ease-out duration-500 group-hover:scale-120"
           />
-          <figcaption className="sr-only">{shortDescription}</figcaption>
         </figure>
         <div className="p-4">
           <div className="flex justify-between items-center">
@@ -44,7 +43,7 @@ export default function ProjectCard({ id, title, image, tags, index, className =
               <h3 className="text-xl font-semibold">
                 {title}
               </h3>
-              { tags && tags.length && 
+              { tags && tags.length &&
                 <ul
                   className="flex flex-col xl:flex-row gap-2 text-sm text-gray-500 mt-1 tags"
                 >

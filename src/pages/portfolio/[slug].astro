@@ -1,0 +1,37 @@
+---
+import ProductLayout from "@layouts/ProductLayout.astro";
+import { getEntry, render } from "astro:content";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/404");
+}
+
+const project = await getEntry("projects", slug);
+
+if (!project) {
+  return Astro.redirect("/404");
+}
+
+const { data } = project;
+const { Content } = await render(project);
+
+import SectionTitle from "@components/SectionTitle.astro";
+import ProjectsSidebar from "@components/ProjectsSidebar.tsx";
+import PlayIcon from "@components/icons/PlayIcon.astro";
+import ArticleTitleText from "@components/ArticleTitleText.astro";
+import ArticleData from "@components/ArticleData.astro";
+
+const components = {
+  SectionTitle,
+  ProjectsSidebar,
+  PlayIcon,
+  ArticleTitleText,
+  ArticleData,
+};
+---
+
+<ProductLayout title={data.title} currentProject={data}>
+  <Content components={components} />
+</ProductLayout>
